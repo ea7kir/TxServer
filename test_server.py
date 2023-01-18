@@ -15,27 +15,20 @@ class RoofData:
 
 roof_data = RoofData()
 
-connected = set()
+#connected = set()
 
 async def server(websocket): #, path):
     print('A client just connected')
     roof_data.connected = True
-    # Store a copy of the connected client
-    connected.add(websocket)
-    # Handle incoming messages
     try:
-        async for message in websocket:
-            print("Received message from client: " + message)
-            # Send a response to all connected clients except sender
-            for conn in connected:
-                if conn != websocket:
-                    await conn.send("Someone said: " + message)
+        while True:
+            await websocket.send('abcdefg')
+            sleep(1.0)
     # Handle disconnecting clients 
     except websockets.exceptions.ConnectionClosed as e:
         print("A client just disconnected")
         roof_data.connected = False
     finally:
-        connected.remove(websocket)
         roof_data.connected = False
 
 start_server = websockets.serve(server, "0.0.0.0", PORT)
