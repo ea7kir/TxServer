@@ -10,10 +10,16 @@ print(f'Server listening on port {PORT}')
 
 # NOTE: https://codedamn.com/news/python/how-to-build-a-websocket-server-in-python
 
+class RoofData:
+    connected = False
+
+roof_data = RoofData()
+
 connected = set()
 
-async def send_to_txtouch(websocket, path):
+async def server(websocket): #, path):
     print('A client just connected')
+    roof_data.connected = True
     # Store a copy of the connected client
     connected.add(websocket)
     # Handle incoming messages
@@ -27,9 +33,11 @@ async def send_to_txtouch(websocket, path):
     # Handle disconnecting clients 
     except websockets.exceptions.ConnectionClosed as e:
         print("A client just disconnected")
+        roof_data.connected = False
     finally:
         connected.remove(websocket)
+        roof_data.connected = False
 
-start_server = websockets.serve(send_to_txtouch, "0.0.0.0", PORT)
+start_server = websockets.serve(server, "0.0.0.0", PORT)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
