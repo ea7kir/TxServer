@@ -5,12 +5,12 @@ PA_SENSOR_ADDRESS = 'abc'
 PREAMP_SENSOR_ADDRESS = 'def'
 
 def _read_sensor(address):
-    temperature = random.randint(30, 39)
-    return f'{temperature} °C'
+    temperature = random.random() * 30
+    txt = '{:.1f} °C'
+    return txt.format(temperature)
 
 def read_pa_temperature():
     return _read_sensor(PA_SENSOR_ADDRESS)
 
 def read_preamp_temperature():
     return _read_sensor(PREAMP_SENSOR_ADDRESS)
-
