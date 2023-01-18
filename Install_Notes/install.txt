@@ -78,6 +78,10 @@ $ pip install --upgrade pip
 
 # sudo reboot
 
+-------------------
+
+pip install websockets
+
 #########################################################
 
 Clone my repo in VSCODE
