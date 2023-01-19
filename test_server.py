@@ -15,14 +15,14 @@ class RoofData:
 
 roof_data = RoofData()
 
-#connected = set()
-
 async def server(websocket): #, path):
     print('A client just connected')
     roof_data.connected = True
+    i = 0
     try:
         while True:
-            await websocket.send('abcdefg')
+            await websocket.send(f'{i}')
+            i += 1
             sleep(1.0)
     # Handle disconnecting clients 
     except websockets.exceptions.ConnectionClosed as e:
@@ -34,3 +34,13 @@ async def server(websocket): #, path):
 start_server = websockets.serve(server, "0.0.0.0", PORT)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+
+##async def echo(websocket):
+##    async for message in websocket:
+##        await websocket.send(message)
+##
+##async def main():
+##    async with websockets.serve(echo, "localhost", 8765):
+##        await asyncio.Future()  # run forever
+##
+##asyncio.run(main())
