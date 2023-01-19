@@ -21,6 +21,9 @@ async def server(websocket): #, path):
     i = 0
     try:
         while True:
+            command = await websocket.recv()
+            print(command)
+
             await websocket.send(f'{i}')
             i += 1
             sleep(1.0)
@@ -34,13 +37,3 @@ async def server(websocket): #, path):
 start_server = websockets.serve(server, "0.0.0.0", PORT)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
-
-##async def echo(websocket):
-##    async for message in websocket:
-##        await websocket.send(message)
-##
-##async def main():
-##    async with websockets.serve(echo, "localhost", 8765):
-##        await asyncio.Future()  # run forever
-##
-##asyncio.run(main())
