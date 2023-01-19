@@ -11,25 +11,25 @@ print(f'Server listening on port {PORT}')
 # NOTE: https://codedamn.com/news/python/how-to-build-a-websocket-server-in-python
 
 class RoofData:
+    counter = 0
     connected = False
 
 roof_data = RoofData()
 
 async def server(websocket): #, path):
-    print('A client just connected')
+    print('A client just connected', flush=True)
     roof_data.connected = True
-    i = 0
     try:
         while True:
             command = await websocket.recv()
-            print(command)
+            print(command, flush=True)
 
-            await websocket.send(f'{i}')
-            i += 1
+            await websocket.send(f'{roof_data.counter}') # TODO: needs JSON
+            roof_data.counter += 1
             sleep(1.0)
     # Handle disconnecting clients 
     except websockets.exceptions.ConnectionClosed as e:
-        print("A client just disconnected")
+        print("A client just disconnected", flush=True)
         roof_data.connected = False
     finally:
         roof_data.connected = False
