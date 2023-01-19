@@ -1,5 +1,7 @@
 import asyncio
 import websockets
+import json
+from json import JSONEncoder
 from time import sleep
 
 PORT = 8765
@@ -14,6 +16,11 @@ class RoofData:
     counter = 0
     connected = False
 
+class RoofDataEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+
 roof_data = RoofData()
 
 ###############################################################
@@ -26,7 +33,9 @@ def OLD_process_run_server(connection):
                 command = await websocket.recv()
                 print(command, flush=True)
 
-                await websocket.send(f'{roof_data.counter}') # TODO: needs JSON
+                data = RoofDataEncoder().encode(roof_data)
+                print(data, flush=True)
+                await websocket.send(data)
                 roof_data.counter += 1
                 sleep(1.0)
         # Handle disconnecting clients 
@@ -42,6 +51,16 @@ def OLD_process_run_server(connection):
 ###############################################################
 
 def NEW_process_run_server(connection):
-    pass
+    async def handler(websocket):
+        print('A client just connected', flush=True)
+        roof_data.connected = True
+        while True:
+            message = await websocket.recv()
+            print(message, flush=True)
+    async def main():
+        async with websockets.serve(handler, "0.0.0.0", PORT):
+            await asyncio.Future()  # run forever
+    asyncio.run(main()) 
 
 OLD_process_run_server(999)
+#NEW_process_run_server(999)
