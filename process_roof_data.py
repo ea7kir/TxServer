@@ -22,7 +22,7 @@ def process_roof_data(connection):
         roof_data.pa_temp:str = read_pa_temperature()
         roof_data.pa_current:str = read_pa_current()
         roof_data.fans = read_fan_status()
-        print('send')
+        print('sensors read')
         connection.send(roof_data)
         sleep(1.0)
 
