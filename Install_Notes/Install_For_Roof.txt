@@ -76,11 +76,21 @@ pyenv global 3.11.1
 
 $ pip install --upgrade pip
 
-# sudo reboot
+#########################################################
+
+5) INSTALL WEBSOCKETS & PyYAML
+
+$ pip install websockets PyYAML
 
 -------------------
 
-pip install websockets
+6) INSTALL PIGPIO (for RELAYS & SENSORS)
+
+$ sudo apt install pigpio python-pigpio python3-pigpio
+
+$ sudo systemctl enable pigpiod
+
+$ sudo systemctl start pigpiod
 
 #########################################################
 

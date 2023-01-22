@@ -17,6 +17,9 @@ eg: apt install pigpio python-pigpio python3-pigpio.
         pi.write(ledPin, False)
         time.sleep(1)
 """
+import pigpio
+
+pi = pigpio.pi()
 
 RELAY_28v_ADDRESS   = 1
 RELAY_12v_ADDRESS   = 2  
