@@ -22,29 +22,35 @@ def produce():
     roof_data.pa_current:str = read_pa_current()
     roof_data.fans = read_fan_status()
     roof_data.connected = True
-    #roof2.send(roof_data)
-    #asyncio.sleep(0.5)
     sleep(1)
     return roof_data
 
+def arm_for_tx():
+    print("SWITCH ON 5 AND 28 VOLTS", flush=True)
+
+def disarm_for_tx():
+    print("SWITCH OFF 5 AND 28 VOLTS", flush=True)
+
+# developed from "TCP echo server using streams"
+# https://docs.python.org/3/library/asyncio-stream.html#tcp-echo-server-using-streams
+
 async def handle(reader, writer):
+    arm_for_tx()
     while True:
         roof_data = produce()
         jsonStr = json.dumps(roof_data.__dict__)
-        print(jsonStr, flush=True)
-        writer.write(jsonStr.encode())
-        await writer.drain()
-
-    print("Close the connection")
+        try:
+            writer.write(jsonStr.encode())
+            await writer.drain()
+        except:
+            break
     writer.close()
+    disarm_for_tx()
 
 async def main():
-    server = await asyncio.start_server(
-        handle, '0.0.0.0', PORT)
-
+    server = await asyncio.start_server(handle, '0.0.0.0', PORT)
     addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
     print(f'Serving on {addrs}', flush=True)
-
     async with server:
         await server.serve_forever()
 
