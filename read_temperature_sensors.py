@@ -1,8 +1,11 @@
+from gpio_connections import *
+
 import random # ONLY NEEDED TO SIMULATE DATA VALUES DURING DEVELOPMENT
 from time import sleep # ONLY NEEDED TO SIMULATE FETCH TIMES DURING DEVELOPMENT
 
-PA_SENSOR_ADDRESS = 'abc'
-PREAMP_SENSOR_ADDRESS = 'def'
+
+def init_temperature_sensors():
+    pass
 
 def _read_sensor(address):
     temperature = random.random() * 30

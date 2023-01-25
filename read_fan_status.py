@@ -1,10 +1,11 @@
+import pigpio
+from gpio_connections import *
+
 import random # ONLY NEEDED TO SIMULATE DATA VALUES DURING DEVELOPMENT
 from time import sleep # ONLY NEEDED TO SIMULATE FETCH TIMES DURING DEVELOPMENT
 
-ENCLOSURE_INTAKE_FAN_ADDRESS    = 1
-ENCLOSURE_EXTRACT_FAN_ADDRESS   = 2
-PA_INTAKE_FAN_ADDRESS           = 3
-PA_EXTRACT_FAN_ADDRESS          = 4
+def init_fan_sensors():
+    pass
 
 def _read_sensor(address):
     moving = bool(random.randint(0, 1))

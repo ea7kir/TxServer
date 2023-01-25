@@ -12,18 +12,32 @@ class RoofData:
     pa_temp: str = ''
     pa_current: str = ''
     fans: str = ''
-    connected: bool = False
+
+def arm_for_tx():
+    print("SWITCHING ON POWER SUPPLIES", flush=True)
+    switch_5v_On()
+    switch_28v_On()
+    switch_12v_On()
+
+def disarm_for_tx():
+    print("SWITCHING OFF POWER SUPPLIES", flush=True)
+    switch_28v_Off()
+    switch_5v_Off()
+    switch_12v_Off()
 
 def process_roof_data(connection):
-    roof_data = RoofData()
+    request = connection.recv()
+    print(f'process_roof_data got {request} from conn2', flush=True)
 
-    while True:
-        roof_data.preamp_temp = read_preamp_temperature()
-        roof_data.pa_temp:str = read_pa_temperature()
-        roof_data.pa_current:str = read_pa_current()
-        roof_data.fans = read_fan_status()
-        print('sensors read')
-        connection.send(roof_data)
-        sleep(1.0)
+    roof_data = RoofData()
+    roof_data.preamp_temp = read_preamp_temperature()
+    roof_data.pa_temp:str = read_pa_temperature()
+    roof_data.pa_current:str = read_pa_current()
+    roof_data.fans = read_fan_status()
+    sleep(1)
+
+    print('process_roof_data will send to conn2', flush=True)
+    connection.send(roof_data)
+    
 
 

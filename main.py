@@ -1,64 +1,68 @@
 """Roof"""
 
+import asyncio
+import json
 from multiprocessing import Process
 from multiprocessing import Pipe
-
-import asyncio
-import websockets
-import pickle
-
 from process_roof_data import process_roof_data
-
-import asyncio
-import websockets
-from time import sleep
 
 PORT = 8765
 
-# NOTE: the server will close the connection after 20 seconds - after the client disconnects
-
-# NOTE: https://codedamn.com/news/python/how-to-build-a-websocket-server-in-python
+from time import sleep
+#
+class RoofData:
+    preamp_temp:str = '-'
+    pa_temp: str = '-'
+    pa_current: str = '-'
+    fans: str = '-'
 
 def run_server(connection):
-    print(f'Server listening on port {PORT}')
-    async def handler(websocket):
-        print('A client just connected', flush=True)
-        connected = True
-        try:
-            while True:
-                #message = await websocket.recv()
-                #print(message, flush=True)
-                #async for message in websocket:
-                #    consumer(message)
-                roof_data = connection.recv()
-                print('ready to send', flush=True)
-                while connection.poll():
-                    print('flush', flush=True)
-                    _ = connection.recv()
-                if connected :
-                    data = pickle.dumps(roof_data)
-                    await websocket.send(data)
-                    print('sent', flush=True)
-        except websockets.exceptions.ConnectionClosedError:
-            print('EXCEPTION: ConnectionClosedError', flush=True)
-        except websockets.exceptions.ConnectionClosed:
-            print('EXCEPTION: ConnectionClosed', flush=True)
-        finally:
-            print('FINALLY', flush=True)
+    # developed from "TCP echo server using streams"
+    # https://docs.python.org/3/library/asyncio-stream.html#tcp-echo-server-using-streams
+    async def handle(reader, writer):
+        print('CLIENT CONNECTED', flush=True)
+        #arm_for_tx()
+        while True:
+            #print('handle will send ASK to conn1', flush=True)
+            connection.send('ASK')
+            #sleep(2)
+            #print('handle will receive roof_data from conn2', flush=True)
+            print('here 1', flush=True)
+            #asyncio.sleep(1)
+            roof_data = connection.recv()   ####### runs 1st time, but stops her on 2nd ####
+            print('here 2', flush=True)
+            #print('here 2', flush=True)
+            #print(f' : {roof_data.pa_temp}', flush=True)
+            #roof_data = RoofData()
+            data_dict = roof_data.__dict__
+            json_dict = json.dumps(data_dict)
+            print(f'{json_dict}', flush=True)
+            json_dict_raw = json_dict.encode()
+            try:
+                writer.write(json_dict_raw)
+                await writer.drain()
+            except IOError as e:
+                print(f'EXCEPTION {e}', flush=True)
+                break
+        writer.close()
 
     async def main():
-        async with websockets.serve(handler, "0.0.0.0", PORT):
-            await asyncio.Future()  # run forever
-    asyncio.run(main()) 
+        server = await asyncio.start_server(handle, '0.0.0.0', PORT)
+        addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
+        print(f'Serving on {addrs}', flush=True)
+        async with server:
+            await server.serve_forever()
+
+    asyncio.run(main())
 
 if __name__ == '__main__':
-    conn1, conn2 = Pipe(duplex=True)
+    parent_connection, child_connection = Pipe()
     # create the process
-    p_read_roof_data = Process(target=process_roof_data, args=(conn2,))
+    p_read_roof_data = Process(target=process_roof_data, args=(child_connection, ))
     # start the process
     p_read_roof_data.start()
-    # main ui
-    run_server(conn1)
+    # main thread
+    run_server(parent_connection)
     # kill 
     p_read_roof_data.kill()
     # shutdown
