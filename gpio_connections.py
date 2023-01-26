@@ -5,11 +5,10 @@ pi = pigpio.pi() # TODO: need to close ? # TODO: move to main()
 # INA226 current/voltage sensors
 # To discover I2C devices
 # $ sudo i2cdetect -y 1
-#
-# self.supply5v  = INA226(i2c: i2cs[1], address: 0x40, shuntOhm: 0.002, maxAmp: 5)
-# self.supply12v = INA226(i2c: i2cs[1], address: 0x41, shuntOhm: 0.002, maxAmp: 5)
-# self.supply28v = INA226(i2c: i2cs[1], address: 0x42, shuntOhm: 0.002, maxAmp: 10)
-PA_CURRENT_VOLTAGE_SENSOR       = 0 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
+# TODO: address could be 0x40, 0x41 or 0x42
+PA_CURRENT_ADDRESS              = 0x42 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
+PA_CURRENT_SHUNT_OHM            = 0.002
+PA_CURRENT_MAX_AMP              = 10
 
 # fan
 ENCLOSURE_INTAKE_FAN_ADDRESS    = 6  # pin 31 GPIO_6
