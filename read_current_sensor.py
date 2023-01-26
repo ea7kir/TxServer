@@ -4,8 +4,12 @@ from gpio_connections import *
 import random # ONLY NEEDED TO SIMULATE DATA VALUES DURING DEVELOPMENT
 from time import sleep # ONLY NEEDED TO SIMULATE FETCH TIMES DURING DEVELOPMENT
 
-def init_current_sensors():
+# address: 0x42, shuntOhm: 0.002, maxAmp: 10
+def _config_INA226(address, shunt_ohm, max_amp):
     pass
+
+def init_current_sensors():
+    _config_INA226(PA_CURRENT_ADDRESS, PA_CURRENT_SHUNT_OHM, PA_CURRENT_MAX_AMP)
 
 def _read_sensor(address):
     current = random.random() * 10
@@ -13,4 +17,4 @@ def _read_sensor(address):
     return txt.format(current)
 
 def read_pa_current():
-    return _read_sensor(PA_CURRENT_VOLTAGE_SENSOR)
+    return _read_sensor(PA_CURRENT_ADDRESS)

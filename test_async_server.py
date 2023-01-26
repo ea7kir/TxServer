@@ -8,22 +8,20 @@ from time import sleep
 
 PORT = 8765
 
-class RoofData:
+class ServerData:
     preamp_temp:str = ''
     pa_temp: str = ''
     pa_current: str = ''
     fans: str = ''
-    connected: bool = False
 
 def produce():
-    roof_data = RoofData()
-    roof_data.preamp_temp = read_preamp_temperature()
-    roof_data.pa_temp:str = read_pa_temperature()
-    roof_data.pa_current:str = read_pa_current()
-    roof_data.fans = read_fan_status()
-    roof_data.connected = True
+    server_data = ServerData()
+    server_data.preamp_temp = read_preamp_temperature()
+    server_data.pa_temp:str = read_pa_temperature()
+    server_data.pa_current:str = read_pa_current()
+    server_data.fans = read_fan_status()
     sleep(1)
-    return roof_data
+    return server_data
 
 def arm_for_tx():
     print("SWITCH ON 5 AND 28 VOLTS", flush=True)
@@ -37,8 +35,8 @@ def disarm_for_tx():
 async def handle(reader, writer):
     arm_for_tx()
     while True:
-        roof_data = produce()
-        jsonStr = json.dumps(roof_data.__dict__)
+        server_data = produce()
+        jsonStr = json.dumps(server_data.__dict__)
         try:
             writer.write(jsonStr.encode())
             await writer.drain()

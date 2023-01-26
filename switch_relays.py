@@ -1,10 +1,14 @@
 import pigpio
 from gpio_connections import *
 
+def _config_relay(relay):   # TODO: should it be gpio or pin ?
+    pi.set_mode(relay, pigpio.OUTPUT)
+    pi.write(relay, RELAY_OFF)
+
 def init_relays():
-    pi.set_mode(RELAY_28v_PIN, pigpio.OUTPUT)
-    pi.set_mode(RELAY_12v_PIN, pigpio.OUTPUT)
-    pi.set_mode(RELAY_5v_PIN, pigpio.OUTPUT)
+    _config_relay(RELAY_28v_PIN)
+    _config_relay(RELAY_12v_PIN)
+    _config_relay(RELAY_5v_PIN)
 
 def _switch_relay(pin, state):
     return

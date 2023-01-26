@@ -4,13 +4,13 @@ import asyncio
 import json
 from multiprocessing import Process
 from multiprocessing import Pipe
-from process_roof_data import process_roof_data
+from process_server_data import process_server_data
 
 PORT = 8765
 
 from time import sleep
 #
-class RoofData:
+class ServerData:
     preamp_temp:str = '-'
     pa_temp: str = '-'
     pa_current: str = '-'
@@ -26,15 +26,15 @@ def run_server(pipe):
             #print('handle will send ASK to conn1', flush=True)
             pipe.send('ASK')
             #sleep(2)
-            #print('handle will receive roof_data from conn2', flush=True)
+            #print('handle will receive server_data from conn2', flush=True)
             print('here 1', flush=True)
             #asyncio.sleep(1)
-            roof_data = pipe.recv()   ####### runs 1st time, but stops her on 2nd ####
+            server_data = pipe.recv()   ####### runs 1st time, but stops her on 2nd ####
             print('here 2', flush=True)
             #print('here 2', flush=True)
-            #print(f' : {roof_data.pa_temp}', flush=True)
-            #roof_data = RoofData()
-            data_dict = roof_data.__dict__
+            #print(f' : {server_data.pa_temp}', flush=True)
+            #server_data = ServerData()
+            data_dict = server_data.__dict__
             json_dict = json.dumps(data_dict)
             print(f'{json_dict}', flush=True)
             json_dict_raw = json_dict.encode()
@@ -59,18 +59,18 @@ if __name__ == '__main__':
     parent_pipe, child_pipe = Pipe()
     # create the process
     p_run_server = Process(target=run_server, args=(parent_pipe, ))
-    p_read_roof_data = Process(target=process_roof_data, args=(child_pipe, ))
+    p_read_server_data = Process(target=process_server_data, args=(child_pipe, ))
     # start the process
     p_run_server.start()
-    p_read_roof_data.start()
+    p_read_server_data.start()
     # main thread
     #run_server(parent_pipe)
 
     p_run_server.join()
-    p_read_roof_data.join()
+    p_read_server_data.join()
 
     # kill 
-    p_read_roof_data.kill()
+    p_read_server_data.kill()
     # shutdown
     print('about to shut down')
     #import subprocess

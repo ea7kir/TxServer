@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /home/pi/Roof
+cd /home/pi/TxServer
 python main.py

@@ -1,14 +1,14 @@
-"""Roof"""
+"""TxServer"""
 
 import asyncio
 import json
-from process_roof_data import read_roof_data
+from process_server_data import read_server_data
 
 PORT = 8765
 
 from time import sleep
 #
-class RoofData:
+class ServerData:
     preamp_temp:str = '-'
     pa_temp: str = '-'
     pa_current: str = '-'
@@ -21,8 +21,8 @@ def run_server():
         print('CLIENT CONNECTED')
         #arm_for_tx()
         while True:
-            roof_data = read_roof_data()
-            data_dict = roof_data.__dict__
+            server_data = read_server_data()
+            data_dict = server_data.__dict__
             json_dict = json.dumps(data_dict)
             print(f'{json_dict}')
             json_dict_raw = json_dict.encode()
