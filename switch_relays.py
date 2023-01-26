@@ -1,39 +1,50 @@
 import pigpio
-from gpio_connections import *
+from gpio_constents import RELAY_ON, RELAY_OFF
+from gpio_constents import RELAY_28v_GPIO, RELAY_12v_GPIO, RELAY_5v_GPIO
 
-def _config_relay(relay):   # TODO: should it be gpio or pin ?
-    pi.set_mode(relay, pigpio.OUTPUT)
-    pi.write(relay, RELAY_OFF)
+_pi = None
 
-def init_relays():
-    _config_relay(RELAY_28v_PIN)
-    _config_relay(RELAY_12v_PIN)
-    _config_relay(RELAY_5v_PIN)
-
-def _switch_relay(pin, state):
+def _switch_relay(gpio, state):
     return
-    pi.write(pin, state)
+    _pi.write(gpio, state)
+
+def _config_relay(gpio):
+    return
+    _pi.set_mode(gpio, pigpio.OUTPUT)
+    _pi.write(gpio, RELAY_OFF)
+
+def configure_relays(pi):
+    global _pi
+    _pi = pi
+    _config_relay(RELAY_28v_GPIO)
+    _config_relay(RELAY_12v_GPIO)
+    _config_relay(RELAY_5v_GPIO)
+
+def shutdown_relays(pi):
+    _switch_relay(RELAY_28v_GPIO, RELAY_OFF)
+    _switch_relay(RELAY_12v_GPIO, RELAY_OFF)
+    _switch_relay(RELAY_5v_GPIO, RELAY_OFF)
 
 def switch_28v_On():
     print("SWITCHING ON 28v")
-    _switch_relay(RELAY_28v_PIN, RELAY_ON)
+    _switch_relay(RELAY_28v_GPIO, RELAY_ON)
 
 def switch_28v_Off():
     print("SWITCHING OFF 28v")
-    _switch_relay(RELAY_28v_PIN, RELAY_OFF)
+    _switch_relay(RELAY_28v_GPIO, RELAY_OFF)
 
 def switch_12v_On():
     print("SWITCHING ON 12v")
-    _switch_relay(RELAY_12v_PIN, RELAY_ON)
+    _switch_relay(RELAY_12v_GPIO, RELAY_ON)
 
 def switch_12v_Off():
     print("SWITCHING OFF 12v")
-    _switch_relay(RELAY_12v_PIN,RELAY_OFF)
+    _switch_relay(RELAY_12v_GPIO,RELAY_OFF)
 
 def switch_5v_On():
     print("SWITCHING ON 5v")
-    _switch_relay(RELAY_5v_PIN, RELAY_ON)
+    _switch_relay(RELAY_5v_GPIO, RELAY_ON)
 
 def switch_5v_Off():
     print("SWITCHING OFF 5v")
-    _switch_relay(RELAY_5v_PIN, RELAY_OFF)
+    _switch_relay(RELAY_5v_GPIO, RELAY_OFF)

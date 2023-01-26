@@ -1,20 +1,24 @@
 import pigpio
 
-pi = pigpio.pi() # TODO: need to close ? # TODO: move to main()
+# TODO: install i2c-tools
+# sudo apt install -y i2c-tools
+# TODO: enable I2C in config
+
+# There's an INA266 C library at https://github.com/MarioAriasGa/raspberry-pi-ina226
 
 # INA226 current/voltage sensors
 # To discover I2C devices
 # $ sudo i2cdetect -y 1
 # TODO: address could be 0x40, 0x41 or 0x42
-PA_CURRENT_ADDRESS              = 0x42 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
+PA_CURRENT_ADDRESS              = 0x40 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
 PA_CURRENT_SHUNT_OHM            = 0.002
 PA_CURRENT_MAX_AMP              = 10
 
-# fan
-ENCLOSURE_INTAKE_FAN_ADDRESS    = 6  # pin 31 GPIO_6
-ENCLOSURE_EXTRACT_FAN_ADDRESS   = 13 # pin 33 GPIO_13
-PA_INTAKE_FAN_ADDRESS           = 19 # pin 35 GPIO_19
-PA_EXTRACT_FAN_ADDRESS          = 26 # pin 37 GPIO_26
+# fan sensors
+ENCLOSURE_INTAKE_FAN_GPIO       = 6  # pin 31 GPIO_6
+ENCLOSURE_EXTRACT_FAN_GPIO      = 13 # pin 33 GPIO_13
+PA_INTAKE_FAN_GPIO              = 19 # pin 35 GPIO_19
+PA_EXTRACT_FAN_GPIO             = 26 # pin 37 GPIO_26
 
 # DS18820 temerature sensors
 # Sset the slave ID for each DS18B20 TO-92 device
@@ -22,14 +26,14 @@ PA_EXTRACT_FAN_ADDRESS          = 26 # pin 37 GPIO_26
 # and look for directors named like: 28-3c01d607d440
 # these are the names to enter here
 # $ /sys/bus/w1/devices/
-TEMPERATURE_SENSOR_PIN          = 4  # pin 7  GPIO_4
+TEMPERATURE_SENSOR_GPIO         = 4  # pin 7  GPIO_4
 PA_SENSOR_SLAVE_ID              = '28-3c01d607e348' # pin 7 GPIO_4
 PREAMP_SENSOR_SLAVE_ID          = '28-3c01d607d440' # pin 7 GPIO_4
 
-# relay
-RELAY_28v_PIN                   = 36 # pin 36 GPIO16
-RELAY_12v_PIN                   = 38 # pin 38 GPIO20
-RELAY_5v_PIN                    = 40 # pin 40 GPIO21
+# relays
+RELAY_28v_GPIO                  = 36 # pin 36 GPIO16
+RELAY_12v_GPIO                  = 38 # pin 38 GPIO20
+RELAY_5v_GPIO                   = 40 # pin 40 GPIO21
 # NOTE: the opto coupleers need reverse logic
 RELAY_ON                        = 0  # TODO: int or bool?
 RELAY_OFF                       = 1

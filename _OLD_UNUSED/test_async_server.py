@@ -52,6 +52,12 @@ async def main():
     async with server:
         await server.serve_forever()
 
+import signal, sys
+def sigint_handler(signal, frame):
+    print ('KeyboardInterrupt error caught')
+#sys.exit(0)
+signal.signal(signal.SIGINT, sigint_handler)
+
 asyncio.run(main())
 
 #process_run_server(999)

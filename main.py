@@ -2,7 +2,9 @@
 
 import asyncio
 import json
-from process_server_data import read_server_data
+import pigpio
+
+from process_server_data import congifure_devices, shutdown_devices, read_server_data
 
 PORT = 8765
 
@@ -49,13 +51,19 @@ def run_server():
 # TODO: intecept sigint for gracefull shutodown
 # TODO: pi = pigpio.pi() # TODO: also need to close ?
 if __name__ == '__main__':
-    run_server()
+
+    pi = pigpio.pi() # TODO: need to close ? # TODO: move to main()
+    congifure_devices(pi)
+
+    run_server()  # TODO: https://github.com/wbenny/python-graceful-shutdown
+
+    shutdown_devices()
+    pi.stop()
+
     # shutdown
     print('about to shut down')
     #import subprocess
     #subprocess.check_call(['sudo', 'poweroff'])
-
-
 
 
 
