@@ -5,7 +5,7 @@ NOTE: CURRENTLY REQUIRES PIOS BULLSEYE 64-BIT LITE
 ## Using Raspberry Pi Imager:
 
 ```
-CHOOSE OS:	Raspberry Pi OS (64-bit)
+CHOOSE OS:	Raspberry Pi OS Lite (64-bit)
 
 CONFIGURE:
 	Set hostname:			txserver
@@ -21,7 +21,26 @@ CONFIGURE:
 SAVE and WRITE
 ```
 
-Insert card and login, wait until the software update icon to appear,
-then proceed with updates and reboot.
+Insert the card and login.
 
-Login and copy this file to the Raspberry Pi and execute.
+## Login
+
+Clone the repro.
+
+```
+git clone https://github.com/ea7kir/TxServer.git
+```
+
+Change permissions for the 3 install scrpits.
+
+```
+chmod +x TxServer/_Resources/install_*
+```
+
+Exeute the 3 install scrpits in order.
+
+```
+./TxServer/_Resources/install_1.sh
+./TxServer/_Resources/install_2.sh
+./TxServer/_Resources/install_3.sh
+```
