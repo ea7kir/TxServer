@@ -1,19 +1,19 @@
 from time import sleep
 
-from read_temperature_sensors import configure_temperature_sensors, shutdown_temperature_sensors
-from read_temperature_sensors import read_pa_temperature, read_preamp_temperature
-from read_fan_status import configure_fan_sensors, shutdown_fan_sensors, read_fan_status
-from read_current_sensor import configure_current_sensors, shutdown_current_sensors, read_pa_current
-from switch_relays import configure_relays, shutdown_relays
-from switch_relays import switch_28v_On, switch_28v_Off
-from switch_relays import switch_12v_On, switch_12v_Off
-from switch_relays import switch_5v_On, switch_5v_Off
+from device_temperatures import configure_temperature_sensors, shutdown_temperature_sensors
+from device_temperatures import read_pa_temperature, read_preamp_temperature
+from device_fans import configure_fan_sensors, shutdown_fan_sensors, read_fan_status
+from device_currents import configure_current_sensors, shutdown_current_sensors, read_pa_current
+from device_relays import configure_relays, shutdown_relays
+from device_relays import switch_28v_On, switch_28v_Off
+from device_relays import switch_12v_On, switch_12v_Off
+from device_relays import switch_5v_On, switch_5v_Off
 
 class ServerData:
-    preamp_temp:str = ''
-    pa_temp: str = ''
-    pa_current: str = ''
-    fans: str = ''
+    preamp_temp = '-'
+    pa_temp = '-'
+    pa_current = '-'
+    fans = '-'
 
 def congifure_devices(pi):
     configure_relays(pi)

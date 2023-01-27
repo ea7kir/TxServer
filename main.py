@@ -4,17 +4,15 @@ import asyncio
 import json
 import pigpio
 
-from process_server_data import congifure_devices, shutdown_devices, read_server_data
+from device_manager import congifure_devices, shutdown_devices, read_server_data
 
 PORT = 8765
 
-from time import sleep
-#
 class ServerData:
-    preamp_temp:str = '-'
-    pa_temp: str = '-'
-    pa_current: str = '-'
-    fans: str = '-'
+    preamp_temp = '-'
+    pa_temp = '-'
+    pa_current = '-'
+    fans = '-'
 
 def run_server():
     # developed from "TCP echo server using streams"
@@ -26,7 +24,7 @@ def run_server():
             server_data = read_server_data()
             data_dict = server_data.__dict__
             json_dict = json.dumps(data_dict)
-            print(f'{json_dict}')
+            #print(f'{json_dict}')
             json_dict_raw = json_dict.encode()
             try:
                 writer.write(json_dict_raw)

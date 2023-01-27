@@ -1,6 +1,6 @@
 import pigpio
-from gpio_constents import RELAY_ON, RELAY_OFF
-from gpio_constents import RELAY_28v_GPIO, RELAY_12v_GPIO, RELAY_5v_GPIO
+from device_constents import RELAY_ON, RELAY_OFF
+from device_constents import RELAY_28v_GPIO, RELAY_12v_GPIO, RELAY_5v_GPIO
 
 _pi = None
 

@@ -3,9 +3,9 @@ import websockets
 import pickle
 from time import sleep
 
-from read_temperature_sensors import read_pa_temperature, read_preamp_temperature
-from read_fan_status import read_fan_status
-from read_current_sensor import read_pa_current
+from device_temperatures import read_pa_temperature, read_preamp_temperature
+from device_fans import read_fan_status
+from device_currents import read_pa_current
 
 PORT = 8765
 

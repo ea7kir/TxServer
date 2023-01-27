@@ -1,4 +1,4 @@
-# Roof
+# TxServer
 
 Control a DATV Preamp and Power Amplifier remotely from the shack using TxTouch.
 
@@ -17,7 +17,7 @@ On a Mac or Windows PC, install and launch the **Raspberry Pi Imager**.
 
 - Click **CHOOSE OS** and select **Raspberry Pi OS Lite (64-bit)**
 - Click the **WHEEL** bottom right
-    - Select hostname to **roof**
+    - Select hostname to **txserver**
     - Select Enable SSH to **Use password autentication**
     - Select Set username and password to **pi* and choose your own password
     - Clcik **SAVE**
@@ -29,6 +29,4 @@ Remove the SSD card, insert it into the Raspberry Pi, and apply power.  The Pi w
 
 From your Mac or Windows PC, open a terminal and login to the Pi.
 
-    - ssh pi@roof.local and enter your password.
-
-
+    - ssh pi@txserver.local and enter your password.

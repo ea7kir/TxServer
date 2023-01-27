@@ -1,11 +1,11 @@
 from time import sleep
 
-from read_temperature_sensors import read_pa_temperature, read_preamp_temperature
-from read_fan_status import read_fan_status
-from read_current_sensor import read_pa_current
-from switch_relays import switch_28v_On, switch_28v_Off
-from switch_relays import switch_12v_On, switch_12v_Off
-from switch_relays import switch_5v_On, switch_5v_Off
+from device_temperatures import read_pa_temperature, read_preamp_temperature
+from device_fans import read_fan_status
+from device_currents import read_pa_current
+from device_relays import switch_28v_On, switch_28v_Off
+from device_relays import switch_12v_On, switch_12v_Off
+from device_relays import switch_5v_On, switch_5v_Off
 
 class ServerData:
     preamp_temp:str = ''
