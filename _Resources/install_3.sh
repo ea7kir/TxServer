@@ -57,7 +57,7 @@ echo "-------------------------------"
 echo
 
 echo "THIS IS NOT WORKING YET"
-# git clone https://github.com/ea7kir/RxTouch.git
+# git clone https://github.com/ea7kir/RxServer.git
 
 echo
 echo "-------------------------------"

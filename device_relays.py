@@ -1,15 +1,15 @@
 import pigpio
-from device_constents import RELAY_ON, RELAY_OFF
-from device_constents import RELAY_28v_GPIO, RELAY_12v_GPIO, RELAY_5v_GPIO
+from device_constants import RELAY_ON, RELAY_OFF
+from device_constants import RELAY_28v_GPIO, RELAY_12v_GPIO, RELAY_5v_GPIO
 
 _pi = None
 
 def _switch_relay(gpio, state):
-    return
+    #return
     _pi.write(gpio, state)
 
 def _config_relay(gpio):
-    return
+    #return
     _pi.set_mode(gpio, pigpio.OUTPUT)
     _pi.write(gpio, RELAY_OFF)
 
@@ -20,7 +20,7 @@ def configure_relays(pi):
     _config_relay(RELAY_12v_GPIO)
     _config_relay(RELAY_5v_GPIO)
 
-def shutdown_relays(pi):
+def shutdown_relays():
     _switch_relay(RELAY_28v_GPIO, RELAY_OFF)
     _switch_relay(RELAY_12v_GPIO, RELAY_OFF)
     _switch_relay(RELAY_5v_GPIO, RELAY_OFF)

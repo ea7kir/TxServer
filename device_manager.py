@@ -1,3 +1,4 @@
+import pigpio
 from time import sleep
 
 from device_temperatures import configure_temperature_sensors, shutdown_temperature_sensors
@@ -15,17 +16,22 @@ class ServerData:
     pa_current = '-'
     fans = '-'
 
-def congifure_devices(pi):
-    configure_relays(pi)
-    configure_current_sensors(pi)
-    configure_temperature_sensors(pi)
-    configure_fan_sensors(pi)
+_pi = None
+
+def congifure_devices():
+    global _pi
+    _pi = pigpio.pi()
+    configure_relays(_pi)
+    configure_current_sensors(_pi)
+    configure_temperature_sensors(_pi)
+    configure_fan_sensors(_pi)
 
 def shutdown_devices():
     shutdown_relays()
     shutdown_fan_sensors()
     shutdown_current_sensors()
     shutdown_temperature_sensors()
+    _pi.stop()
 
 def arm_for_tx():
     print("SWITCHING ON POWER SUPPLIES")

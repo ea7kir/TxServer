@@ -1,4 +1,4 @@
-import pigpio
+# constants
 
 # TODO: install i2c-tools
 # sudo apt install -y i2c-tools
@@ -30,10 +30,10 @@ TEMPERATURE_SENSOR_GPIO         = 4  # pin 7  GPIO_4
 PA_SENSOR_SLAVE_ID              = '28-3c01d607e348' # pin 7 GPIO_4
 PREAMP_SENSOR_SLAVE_ID          = '28-3c01d607d440' # pin 7 GPIO_4
 
-# relays
-RELAY_28v_GPIO                  = 36 # pin 36 GPIO16
-RELAY_12v_GPIO                  = 38 # pin 38 GPIO20
-RELAY_5v_GPIO                   = 40 # pin 40 GPIO21
+# Waveshare RPi Relay Board
+RELAY_28v_GPIO                  = 26 # pin 37 GPIO_26 (CH1 P25)
+RELAY_12v_GPIO                  = 20 # pin 38 GPIO_20 (CH2 P28)
+RELAY_5v_GPIO                   = 21 # pin 40 GPIO_21 (CH3 P29)
 # NOTE: the opto coupleers need reverse logic
 RELAY_ON                        = 0  # TODO: int or bool?
 RELAY_OFF                       = 1
