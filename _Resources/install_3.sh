@@ -52,6 +52,14 @@ pip install pigpio websockets PyYAML
 
 echo
 echo "-------------------------------"
+echo "-- Enable 1-Wire and I2C"
+echo "-------------------------------"
+echo
+
+echo "THIS IS NOT WORKING YET"
+
+echo
+echo "-------------------------------"
 echo "-- Cloning TxServer from github"
 echo "-------------------------------"
 echo

@@ -20,12 +20,15 @@ ENCLOSURE_EXTRACT_FAN_GPIO      = 13 # pin 33 GPIO_13
 PA_INTAKE_FAN_GPIO              = 19 # pin 35 GPIO_19
 PA_EXTRACT_FAN_GPIO             = 26 # pin 37 GPIO_26
 
-# DS18820 temerature sensors
+# DS18B20 temerature sensors
 # Sset the slave ID for each DS18B20 TO-92 device
 # To find those available, type: cd /sys/bus/w1/devices/
 # and look for directors named like: 28-3c01d607d440
-# these are the names to enter here
-# $ /sys/bus/w1/devices/
+#
+# To enable the 1-wire bus add the following line to /boot/config.txt and reboot.
+# dtoverlay=w1-gpio
+# By default you should connect the DS18B20 data line to GPIO 4 (pin 7).
+# Connect 3V3 or 5V for power, ground to ground, 4k7 pull-up on data line to 3V3, and data line to GPIO 4.
 TEMPERATURE_SENSOR_GPIO         = 4  # pin 7  GPIO_4
 PA_SENSOR_SLAVE_ID              = '28-3c01d607e348' # pin 7 GPIO_4
 PREAMP_SENSOR_SLAVE_ID          = '28-3c01d607d440' # pin 7 GPIO_4
