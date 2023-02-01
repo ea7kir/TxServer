@@ -10,7 +10,7 @@
 # To discover I2C devices
 # $ sudo i2cdetect -y 1
 # TODO: address could be 0x40, 0x41 or 0x42
-PA_CURRENT_ADDRESS              = 0x40 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
+PA_CURRENT_ADDRESS              = 0x41 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
 PA_CURRENT_SHUNT_OHM            = 0.002
 PA_CURRENT_MAX_AMP              = 10
 
