@@ -10,7 +10,7 @@ if not pi.connected:
     exit()
 
 def _read_DS18B20(address):
-    temperatute = '-'
+    temperature = '-'
     #pigpio.exceptions = False
     try:
         sensor = '/sys/bus/w1/devices/' + address + '/w1_slave'
@@ -22,15 +22,15 @@ def _read_DS18B20(address):
         73 01 4b 46 7f ff 0d 10 41 : crc=41 YES
         73 01 4b 46 7f ff 0d 10 41 t=23187
         """
-        # NOTE: ti get this working, I needed to convert str to byte objects
+        # NOTE: to get this working, I needed to treat str as byte objects
         if b'YES' in data:
             (discard, sep, reading) = data.partition(b' t=')
-            temp = float(reading) / 1000.0
-            temperatute = '{:.1f}'.format(temp)
+            float_temperature = float(reading) / 1000.0
+            temperature = '{:.1f} °C'.format(float_temperature)
     except:
         pass
     #pigpio.exceptions = True
-    return temperatute
+    return temperature
 
 if __name__ == '__main__':
     temp = _read_DS18B20(PREAMP_SENSOR_SLAVE_ID)

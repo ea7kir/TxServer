@@ -25,11 +25,12 @@ PA_EXTRACT_FAN_GPIO             = 26 # pin 37 GPIO_26
 # To find those available, type: cd /sys/bus/w1/devices/
 # and look for directors named like: 28-3c01d607d440
 #
-# To enable the 1-wire bus add the following line to /boot/config.txt and reboot.
-# dtoverlay=w1-gpio
-# By default you should connect the DS18B20 data line to GPIO 4 (pin 7).
-# Connect 3V3 or 5V for power, ground to ground, 4k7 pull-up on data line to 3V3, and data line to GPIO 4.
-TEMPERATURE_SENSOR_GPIO         = 4  # pin 7  GPIO_4
+# To enable the 1-wire bus add 'dtoverlay=w1-gpio' to /boot/config.txt and reboot.
+# For permissions, add '/sys/bus/w1/devices/28*/w1_slave r' to /opt/pigpio/access.
+# Default connection is data line to GPIO 4 (pin 7).
+# Connect 3V3 or 5V for power, ground to ground.
+# 4k7 pull-up on data line to 3V3, and data line to pin 7 GPIO 4.
+#TEMPERATURE_SENSOR_GPIO         = 4  # DEFAULT is pin 7  GPIO_4
 PA_SENSOR_SLAVE_ID              = '28-3c01d607e348' # pin 7 GPIO_4
 PREAMP_SENSOR_SLAVE_ID          = '28-3c01d607d440' # pin 7 GPIO_4
 
@@ -38,18 +39,5 @@ RELAY_28v_GPIO                  = 26 # pin 37 GPIO_26 (CH1 P25)
 RELAY_12v_GPIO                  = 20 # pin 38 GPIO_20 (CH2 P28)
 RELAY_5v_GPIO                   = 21 # pin 40 GPIO_21 (CH3 P29)
 # NOTE: the opto coupleers need reverse logic
-RELAY_ON                        = 0  # TODO: int or bool?
+RELAY_ON                        = 0
 RELAY_OFF                       = 1
-
-# SatServer used...
-# RELAY_0 = 17 # pin 11 # Relay 0 - AC to Psu12v Contactor
-# RELAY_1 = 27 # pin 13 # Relay 1 - AC to Psu28v Contactor
-# RELAY_2 = 22 # pin 15 # Relay 2 - 5v to RX Pi
-# RELAY_3 = 10 # pin 19 # Relay 3 - 12v to Pluto Fan, Driver Fan, PA LH Fan, PA RH Fan
-# RELAY_4 = 9  # pin 21 # Relay 4 - 5v to Pluto Vcc
-# RELAY_5 = 11 # pin 23 # Relay 5 - 5v to Driver Vcc (PTT)
-# RELAY_6 = 5  # pin 29 # Relay 6 - 28v to PA Bias (PTT)
-# RELAY_7 = 6  # pin 31 # Relay 7 - reserved
-# 
-# RELAY_OFF = 1 # note: the opto coupleers need reverse logic
-# RELAY_ON = 0
