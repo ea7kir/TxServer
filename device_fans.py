@@ -3,10 +3,10 @@ import time
 from device_constants import ENCLOSURE_INTAKE_FAN_GPIO, ENCLOSURE_EXTRACT_FAN_GPIO
 from device_constants import PA_INTAKE_FAN_GPIO, PA_EXTRACT_FAN_GPIO
 
-class reader:
+class FanReader:
    """
    A class to read speedometer pulses and calculate the RPM.
-   https://abyz.me.uk/rpi/pigpio/code/read_RPM_py.zip
+   Derived from: https://abyz.me.uk/rpi/pigpio/code/read_RPM_py.zip
    """
    def __init__(self, pi, gpio, pulses_per_rev=2.0, weighting=0.0, min_RPM=1000.0):
       """
@@ -89,11 +89,10 @@ class reader:
 
    def cancel(self):
       """
-      Cancels the reader and releases resources.
+      Cancels the fan_reader and releases resources.
       """
       self.pi.set_watchdog(self.gpio, 0) # cancel watchdog
       self._cb.cancel()
-
 
 _enclosure_intake_reader = None
 _enclosure_extract_reader = None
@@ -102,10 +101,10 @@ _pa_extract_reader = None
 
 def configure_fan_sensors(pi):
     global _enclosure_intake_reader, _enclosure_extract_reader, _pa_intake_reader, _pa_extract_reader
-    _enclosure_intake_reader = reader(pi, ENCLOSURE_INTAKE_FAN_GPIO)
-    _enclosure_extract_reader = reader(pi, ENCLOSURE_EXTRACT_FAN_GPIO)
-    _pa_intake_reader = reader(pi, PA_INTAKE_FAN_GPIO)
-    _pa_extract_reader = reader(pi, PA_EXTRACT_FAN_GPIO)
+    _enclosure_intake_reader = FanReader(pi, ENCLOSURE_INTAKE_FAN_GPIO)
+    _enclosure_extract_reader = FanReader(pi, ENCLOSURE_EXTRACT_FAN_GPIO)
+    _pa_intake_reader = FanReader(pi, PA_INTAKE_FAN_GPIO)
+    _pa_extract_reader = FanReader(pi, PA_EXTRACT_FAN_GPIO)
 
 def shutdown_fan_sensors():
     _enclosure_intake_reader.cancel()
@@ -114,10 +113,10 @@ def shutdown_fan_sensors():
     _pa_extract_reader.cancel()
 
 def read_fan_status():
-    a = '_';  b = '_'; c = '_'; d = '_'
+    a = '?';  b = '?'; c = '?'; d = '?'
     if _enclosure_intake_reader.RPM() > 0:      a = '1'
     if _enclosure_extract_reader.RPM() > 0:     b = '2'
-    if  _pa_extract_reader.RPM() > 0:           c = '3'
+    if _pa_extract_reader.RPM() > 0:            c = '3'
     if _pa_extract_reader.RPM() > 0:            d = '4'
     return a + b + c + d
 
