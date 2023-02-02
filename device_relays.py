@@ -10,6 +10,7 @@ def _switch_relay(gpio, state):
 
 def _config_relay(gpio):
     _pi.set_mode(gpio, pigpio.OUTPUT)
+    #_pi.set_pad_strength(2, 14) # Set pad 2 to 14 mA.
     _pi.write(gpio, RELAY_OFF)
 
 def configure_relays(pi):
