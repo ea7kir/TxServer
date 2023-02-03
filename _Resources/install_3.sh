@@ -52,11 +52,20 @@ pip install pigpio websockets PyYAML
 
 echo
 echo "-------------------------------"
+echo "-- Installing i2c-tools python3-smbus"
+echo "-------------------------------"
+echo
+
+sudo apt install -y i2c-tools python3-smbus
+
+echo
+echo "-------------------------------"
 echo "-- Enable 1-Wire and I2C"
 echo "-------------------------------"
 echo
 
-echo "THIS IS NOT WORKING YET"
+echo "Enable with sudo raspi-config"
+echo "Add /sys/bus/w1/devices/28*/w1_slave r to /opt/pigpio/acces"
 
 echo
 echo "-------------------------------"
@@ -64,7 +73,7 @@ echo "-- Cloning TxServer from github"
 echo "-------------------------------"
 echo
 
-echo "THIS IS NOT WORKING YET"
+echo "Cloning IS NOT WORKING YET"
 # git clone https://github.com/ea7kir/RxServer.git
 
 echo

@@ -27,7 +27,7 @@ class DS18B20Reader:
 
     def temperature(self):
         time.sleep(0.1) # allow settling time
-        temperature = '-'
+        temperature = '? °C'
         #pigpio.exceptions = False
         try:
             sensor = '/sys/bus/w1/devices/' + self.slave_id + '/w1_slave'

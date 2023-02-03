@@ -74,7 +74,6 @@ class INA226Reader():
             print(f'EXCEPTION reading volts/amps')
             return '? Volts', '? Amps'
         return '{:.1f} Volts'.format(float_volts), '{:.1f} Amps'.format(float_current)
-        
 
     def cancel(self):
         time.sleep(0.200)
