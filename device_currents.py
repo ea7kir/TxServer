@@ -7,7 +7,6 @@ class INA226Reader():
     """
     A class to read an INA266 current/voltage sensor.
     """
-
     _INA226_RESET = 0x8000 # :UInt16
     _INA226_REG_CALIBRATION = 0x05 # UInt8
     _INA226_REG_CONFIGURATION = 0x00 # UInt8
@@ -16,65 +15,76 @@ class INA226Reader():
     _INA226_MODE_SHUNT_BUS_CONTINUOUS = 7 # :UI
     _INA226_REG_BUS_VOLTAGE = 0x02 # :UInt8
     _INA226_REG_CURRENT = 0x04 # :UInt8
-
-    _I2C_BUSS = 1
-    _I2C_FLAGS = 0
-
+    _pi = None
     _handle = None
+    _available = False
     _currentLSBs = None
 
     def __init__(self, pi, address, shunt_ohm, max_amp):
         """
         Use 'sudo i2cdetect -y 1' to display the connected I2C devices.
         """
-        self.pi = pi
-        #self.address = address
-        #self.shunt_ohm = shunt_ohm
-        #self.max_amp = max_amp
-        self._configure(self._I2C_BUSS, self._I2C_FLAGS, address, shunt_ohm, max_amp)
+        self._pi = pi
+        I2C_BUSS = 1
+        try:
+            # open
+            self._handle = self._pi.i2c_open(I2C_BUSS, address) #, I2C_FLAGS)
 
-    def _configure(self, bus, flags, address, shunt_ohm, max_amp):
-        # connect
-        self._handle = self.pi.i2c_open(bus, address, flags)
+            # reset
+            time.sleep(0.200)
+            self._pi.i2c_write_word_data(self._handle, self._INA226_REG_CONFIGURATION, self._INA226_RESET)
 
-        # reset
-        time.sleep(0.001)
-        self.pi.i2c_write_word_data(self._handle, self._INA226_REG_CONFIGURATION, self._INA226_RESET)
+            # configure
+            time.sleep(0.200)
+            shunt = self._INA226_TIME_8MS
+            average = self._INA226_AVERAGES_16
+            mode = self._INA226_MODE_SHUNT_BUS_CONTINUOUS
 
-        # configure
-        time.sleep(0.001)
-        shunt = self._INA226_TIME_8MS
-        average = self._INA226_AVERAGES_16
-        mode = self._INA226_MODE_SHUNT_BUS_CONTINUOUS
+            # calibrate
+            time.sleep(0.200)
+            self._currentLSBs = max_amp / float(1 << 15) # max_current / (1 << 15)
+            calib: float = 0.00512 / (self._currentLSBs * shunt_ohm)
+            calibReg = int(floor(calib)) # :UInt16
+            self._currentLSBs = 0.00512 / (shunt_ohm * float(calibReg)) # 0.00512 / (r_shunt * calib_reg)
+            self._pi.i2c_write_word_data(self._handle, self._INA226_REG_CALIBRATION, calibReg) #calibReg.byteSwapped)
 
-        # calibrate
-        time.sleep(0.001)
-        self._currentLSBs = max_amp / float(1 << 15) # max_current / (1 << 15)
-        calib: float = 0.00512 / (self._currentLSBs * shunt_ohm)
-        calibReg = int(floor(calib)) # :UInt16
-        self._currentLSBs = 0.00512 / (shunt_ohm * float(calibReg)) # 0.00512 / (r_shunt * calib_reg)
-        self.pi.i2c_write_word_data(self._handle, self._INA226_REG_CALIBRATION, calibReg) #calibReg.byteSwapped)
-
-        # configure
-        time.sleep(0.001)
-        configReg = (int(average) << 9) | (int(bus) << 6) | (int(shunt) << 3) | int(mode)
-        self.pi.i2c_write_word_data(self._handle, self._INA226_REG_CONFIGURATION, configReg) #configReg.byteSwapped)
+            # configure
+            time.sleep(0.200)
+            configReg = (int(average) << 9) | (int(I2C_BUSS) << 6) | (int(shunt) << 3) | int(mode)
+            self._pi.i2c_write_word_data(self._handle, self._INA226_REG_CONFIGURATION, configReg) #configReg.byteSwapped)
+            self._available = True
+        except:
+            print(f'EXCEPTION configuring INA266 at {hex(address)}')
+            self._available = False
 
     def current(self):
-        time.sleep(0.001)
-        currentReg = int( self.pi.i2c_read_word_data(self._handle, self._INA226_REG_CURRENT) ) #_INA226_REG_CURRENT).byteSwapped ) # return as Int16
-        float_current = float(currentReg) * self._currentLSBs
+        if not self._available:
+            return '? Amps'
+        try:
+            time.sleep(0.200)
+            currentReg = int( self._pi.i2c_read_word_data(self._handle, self._INA226_REG_CURRENT) ) #_INA226_REG_CURRENT).byteSwapped ) # return as Int16
+            float_current = float(currentReg) * self._currentLSBs
+        except:
+            print(f'EXCEPTION reading current value')
+            return '? Amps'
         return '{:.1f} Amps'.format(float_current)
+        
 
     def voltage(self):
-        time.sleep(0.001)
-        voltageReg = int( self.pi.i2c_read_word_data(self._handle, self._INA226_REG_BUS_VOLTAGE) ) #_INA226_REG_BUS_VOLTAGE).byteSwapped ) # return as Int16
-        float_volts = float(voltageReg) * 0.00125
+        if not self._available:
+            return '? Volts'
+        try:
+            time.sleep(0.200)
+            voltageReg = int( self._pi.i2c_read_word_data(self._handle, self._INA226_REG_BUS_VOLTAGE) ) #_INA226_REG_BUS_VOLTAGE).byteSwapped ) # return as Int16
+            float_volts = float(voltageReg) * 0.00125
+        except:
+            print(f'EXCEPTION reading voltage value')
+            return '? Volts'
         return '{:.1f} Volts'.format(float_volts)
 
     def cancel(self):
-        time.sleep(0.001)
-        self.pi.i2c_close(self._handle)
+        time.sleep(0.200)
+        self._pi.i2c_close(self._handle)
 
 _pa_current_sensor = None
 
