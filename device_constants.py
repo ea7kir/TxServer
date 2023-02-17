@@ -10,31 +10,32 @@
 # To discover I2C devices
 # $ sudo i2cdetect -y 1
 # TODO: address could be 0x40, 0x41 or 0x42
-PA_CURRENT_ADDRESS              = 0x41 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
+# I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
+# 0.0k pull-up resistors on data lines to 3.3v
+PA_CURRENT_ADDRESS              = 0x41
 PA_CURRENT_SHUNT_OHM            = 0.002
 PA_CURRENT_MAX_AMP              = 10
 
-# fan sensors
-ENCLOSURE_INTAKE_FAN_GPIO       = 6  # pin 31 GPIO_6
-ENCLOSURE_EXTRACT_FAN_GPIO      = 13 # pin 33 GPIO_13
-PA_INTAKE_FAN_GPIO              = 19 # pin 35 GPIO_19
-PA_EXTRACT_FAN_GPIO             = 26 # pin 37 GPIO_26
+# FAN SENSORS
+# 0.0k pull-up resistors on sensor lines to 3.3v
+ENCLOSURE_INTAKE_FAN_GPIO       = 5  # pin 29 GPIO_5
+ENCLOSURE_EXTRACT_FAN_GPIO      = 6  # pin 31 GPIO_6
+PA_INTAKE_FAN_GPIO              = 13 # pin 33 GPIO_13
+PA_EXTRACT_FAN_GPIO             = 19 # pin 35 GPIO_19
 
-# DS18B20 temerature sensors
-# Sset the slave ID for each DS18B20 TO-92 device
-# To find those available, type: cd /sys/bus/w1/devices/
-# and look for directors named like: 28-3c01d607d440
-#
+# DS18B20 TEMPERATURE SENSORS
 # To enable the 1-wire bus add 'dtoverlay=w1-gpio' to /boot/config.txt and reboot.
 # For permissions, add '/sys/bus/w1/devices/28*/w1_slave r' to /opt/pigpio/access.
 # Default connection is data line to GPIO 4 (pin 7).
-# Connect 3V3 or 5V for power, ground to ground.
-# 4k7 pull-up on data line to 3V3, and data line to pin 7 GPIO 4.
-#TEMPERATURE_SENSOR_GPIO         = 4  # DEFAULT is pin 7  GPIO_4
+# 4k7 pull-up on data line to 3V3
+#
+# Sset the slave ID for each DS18B20 TO-92 device
+# To find those available, type: cd /sys/bus/w1/devices/
+# and look for directories named like: 28-3c01d607d440
 PA_SENSOR_SLAVE_ID              = '28-3c01d607e348' # pin 7 GPIO_4
 PREAMP_SENSOR_SLAVE_ID          = '28-3c01d607d440' # pin 7 GPIO_4
 
-# Waveshare RPi Relay Board
+# WAVESHARE RPi RELAY BOARD
 RELAY_28v_GPIO                  = 26 # pin 37 GPIO_26 (CH1 P25)
 RELAY_12v_GPIO                  = 20 # pin 38 GPIO_20 (CH2 P28)
 RELAY_5v_GPIO                   = 21 # pin 40 GPIO_21 (CH3 P29)
