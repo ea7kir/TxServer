@@ -113,11 +113,12 @@ def shutdown_fan_sensors():
     _pa_extract_reader.cancel()
 
 def read_fan_status():
+    print(f'enc int {int(_enclosure_intake_reader.RPM())} enc ext {int(_enclosure_extract_reader.RPM())} pa int {int(_pa_intake_reader.RPM())} pa ext {int(_pa_extract_reader.RPM())}')
     a = '?';  b = '?'; c = '?'; d = '?'
-    if _enclosure_intake_reader.RPM() > 0:      a = '1'
-    if _enclosure_extract_reader.RPM() > 0:     b = '2'
-    if _pa_extract_reader.RPM() > 0:            c = '3'
-    if _pa_extract_reader.RPM() > 0:            d = '4'
+    if _enclosure_intake_reader.RPM() > 2000:      a = '1'
+    if _enclosure_extract_reader.RPM() > 2000:     b = '2'
+    if _pa_intake_reader.RPM() > 2000:             c = '3'
+    if _pa_extract_reader.RPM() > 2000:            d = '4'
     return a + b + c + d
 
 if __name__ == '__main__':
