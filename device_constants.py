@@ -11,13 +11,13 @@
 # $ sudo i2cdetect -y 1
 # TODO: address could be 0x40, 0x41 or 0x42
 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
-# 0.0k pull-up resistors on data lines to 3.3v
+# 0k0 pull-up resistors on data lines to 3.3v
 PA_CURRENT_ADDRESS              = 0x41
 PA_CURRENT_SHUNT_OHM            = 0.002
 PA_CURRENT_MAX_AMP              = 10
 
 # FAN SENSORS
-# 0.0k pull-up resistors on sensor lines to 3.3v
+# 1k0 pull-up resistors on sensor lines to 3.3v
 ENCLOSURE_INTAKE_FAN_GPIO       = 5  # pin 29 GPIO_5
 ENCLOSURE_EXTRACT_FAN_GPIO      = 6  # pin 31 GPIO_6
 PA_INTAKE_FAN_GPIO              = 13 # pin 33 GPIO_13
