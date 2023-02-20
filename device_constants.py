@@ -12,8 +12,8 @@
 # TODO: address could be 0x40, 0x41 or 0x42
 # I2C pin3 GPIO2 SDA, pin 5 GPIO3 SCL
 # 0k0 pull-up resistors on data lines to 3.3v
-PA_CURRENT_ADDRESS              = 0x41
-PA_CURRENT_SHUNT_OHM            = 0.002
+PA_CURRENT_ADDRESS              = 0x40
+PA_CURRENT_SHUNT_OHM            = 0.0021 # modified from 0,002 to get correct current reading
 PA_CURRENT_MAX_AMP              = 10
 
 # FAN SENSORS
