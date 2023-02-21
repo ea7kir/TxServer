@@ -90,7 +90,7 @@ def shutdown_current_sensors():
 
 def read_pa_current():
     volts, amps = _pa_current_sensor.volts_amps()
-    print(f'volts {volts}   amps {amps}')
+    #print(f'volts {volts}   amps {amps}')
     return amps
 
 def read_pa_voltage():
