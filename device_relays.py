@@ -54,8 +54,8 @@ def switch_12v_Off():
     _relay_12v.switch_off()
 
 def switch_5v_On():
-    print("SWITCHING ON 5v DISABLED")
-    #_relay_5v.switch_on()
+    print("SWITCHING ON 5v")
+    _relay_5v.switch_on()
 
 def switch_5v_Off():
     print("SWITCHING OFF 5v")
