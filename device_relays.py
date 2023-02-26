@@ -2,6 +2,8 @@ import pigpio
 from device_constants import RELAY_ON, RELAY_OFF
 from device_constants import RELAY_28v_GPIO, RELAY_12v_GPIO, RELAY_5v_GPIO
 
+import logging
+
 class RelaySwitcher():
     """
     A class to switch a relay on and off.
@@ -38,25 +40,25 @@ def shutdown_relays():
     _relay_5v.cancel()
 
 def switch_28v_On():
-    print("SWITCHING ON 28v")
+    logging.info('28v PSU goes ON')
     _relay_28v.switch_on()
 
 def switch_28v_Off():
-    print("SWITCHING OFF 28v")
+    logging.info('28v PSU goes off')
     _relay_28v.switch_off()
 
 def switch_12v_On():
-    print("SWITCHING ON 12v")
+    logging.info('12v PSU goes ON')
     _relay_12v.switch_on()
 
 def switch_12v_Off():
-    print("SWITCHING OFF 12v")
+    logging.info('12v PSU goes OFF')
     _relay_12v.switch_off()
 
 def switch_5v_On():
-    print("SWITCHING ON 5v")
+    logging.info('5v PSU goes ON')
     _relay_5v.switch_on()
 
 def switch_5v_Off():
-    print("SWITCHING OFF 5v")
+    logging.info('5v PSU goes OFF')
     _relay_5v.switch_off()

@@ -2,14 +2,12 @@
 
 import asyncio
 import json
-from time import sleep
 
+import logging
+
+from device_constants import SERVER_PORT
 from device_manager import congifure_devices, shutdown_devices, read_server_data
-from device_manager import switch_28v_On, switch_28v_Off
-from device_manager import switch_12v_On, switch_12v_Off
-from device_manager import switch_5v_On, switch_5v_Off
-
-PORT = 8765
+from device_manager import power_up, power_down
 
 class ServerData:
     preamp_temp = '-'
@@ -17,26 +15,12 @@ class ServerData:
     pa_current = '-'
     fans = '-'
 
-def arm_for_tx():
-    switch_5v_On()
-    sleep(1)
-    switch_28v_On()
-    sleep(1)
-    switch_12v_On()
-
-def disarm_for_tx():
-    switch_28v_Off()
-    sleep(1)
-    switch_5v_Off()
-    sleep(1)
-    switch_12v_Off()
-
 def run_server():
     # developed from "TCP echo server using streams"
     # https://docs.python.org/3/library/asyncio-stream.html#tcp-echo-server-using-streams
     async def handle(reader, writer):
-        print('CLIENT CONNECTED')
-        arm_for_tx()
+        logging.info('Client connected')
+        power_up()
         while True:
             server_data = read_server_data()
             data_dict = server_data.__dict__
@@ -50,22 +34,25 @@ def run_server():
             #    print(f'EXCEPTION {e}')
             #    break
             except ConnectionResetError:
-                print(f'CONNECTION LOST')
-                disarm_for_tx()
+                logging.info('Connection lost')
+                power_down()
                 break
         writer.close()
 
     async def main():
-        server = await asyncio.start_server(handle, '0.0.0.0', PORT)
+        server = await asyncio.start_server(handle, '0.0.0.0', SERVER_PORT)
         addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
-        print(f'Serving on {addrs}')
+        logging.info(f'Serving on {addrs}')
         async with server:
             await server.serve_forever()
 
     asyncio.run(main())
 
+logging.basicConfig(filename='/home/pi/txserver.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.DEBUG)
+logging.info('---------- TxServer Starting ----------')
+
 # TODO: intecept sigint for gracefull shutodown
-# TODO: pi = pigpio.pi() # TODO: also need to close ?
+
 if __name__ == '__main__':
 
     congifure_devices()
@@ -75,7 +62,7 @@ if __name__ == '__main__':
     shutdown_devices()
 
     # shutdown
-    print('about to shut down')
+    logging.info('About to shutdown')
     #import subprocess
     #subprocess.check_call(['sudo', 'poweroff'])
 

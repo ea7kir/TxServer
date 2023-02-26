@@ -3,6 +3,8 @@ import time
 from device_constants import ENCLOSURE_INTAKE_FAN_GPIO, ENCLOSURE_EXTRACT_FAN_GPIO
 from device_constants import PA_INTAKE_FAN_GPIO, PA_EXTRACT_FAN_GPIO
 
+import logging
+
 class FanReader:
    """
    A class to read speedometer pulses and calculate the RPM.
@@ -113,7 +115,7 @@ def shutdown_fan_sensors():
     _pa_extract_reader.cancel()
 
 def read_fan_status():
-    #print(f'enc int {int(_enclosure_intake_reader.RPM())} enc ext {int(_enclosure_extract_reader.RPM())} pa int {int(_pa_intake_reader.RPM())} pa ext {int(_pa_extract_reader.RPM())}')
+    #logging.info(f'enc int {int(_enclosure_intake_reader.RPM())} enc ext {int(_enclosure_extract_reader.RPM())} pa int {int(_pa_intake_reader.RPM())} pa ext {int(_pa_extract_reader.RPM())}')
     a = '?';  b = '?'; c = '?'; d = '?'
     if _enclosure_intake_reader.RPM() > 1500:      a = '1'
     if _enclosure_extract_reader.RPM() > 1500:     b = '2'

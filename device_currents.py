@@ -1,6 +1,9 @@
 import pigpio
 import time
 from math import floor
+
+import logging
+
 from device_constants import PA_CURRENT_ADDRESS, PA_CURRENT_SHUNT_OHM, PA_CURRENT_MAX_AMP
 #import numpy as np
 

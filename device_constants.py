@@ -1,5 +1,7 @@
 # constants
 
+SERVER_PORT                     = 8765
+
 # TODO: install i2c-tools
 # sudo apt install -y i2c-tools
 # TODO: enable I2C in config

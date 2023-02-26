@@ -2,6 +2,8 @@ import pigpio
 import time
 from device_constants import PA_SENSOR_SLAVE_ID, PREAMP_SENSOR_SLAVE_ID
 
+import logging
+
 class DS18B20Reader:
     """
     A class to read a DS18B20 1-Wire sensor and return a temperature string.

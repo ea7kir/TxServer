@@ -1,6 +1,8 @@
 import pigpio
 from time import sleep
 
+import logging
+
 from device_temperatures import configure_temperature_sensors, shutdown_temperature_sensors
 from device_temperatures import read_pa_temperature, read_preamp_temperature
 from device_fans import configure_fan_sensors, shutdown_fan_sensors, read_fan_status
@@ -33,16 +35,20 @@ def shutdown_devices():
     shutdown_temperature_sensors()
     _pi.stop()
 
-def arm_for_tx():
-    print("SWITCHING ON POWER SUPPLIES")
+def power_up():
+    logging.info('Begin power up')
     switch_5v_On()
+    sleep(1)
     switch_28v_On()
+    sleep(1)
     switch_12v_On()
 
-def disarm_for_tx():
-    print("SWITCHING OFF POWER SUPPLIES")
+def power_down():
+    logging.info('Begin power down')
     switch_28v_Off()
+    sleep(1)
     switch_5v_Off()
+    sleep(1)
     switch_12v_Off()
 
 def read_server_data():
