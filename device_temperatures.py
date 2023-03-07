@@ -45,7 +45,7 @@ class DS18B20Reader:
             if b'YES' in data:
                 (discard, sep, reading) = data.partition(b' t=')
                 float_temperature = float(reading) / 1000.0
-                temperature = '{:.1f} °C'.format(float_temperature)
+                temperature = '{:.1f}°C'.format(float_temperature)
         except:
             pass
         #pigpio.exceptions = True

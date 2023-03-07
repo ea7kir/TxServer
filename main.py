@@ -7,7 +7,7 @@ import logging
 
 from device_constants import SERVER_PORT
 from device_manager import congifure_devices, shutdown_devices, read_server_data
-from device_manager import power_up, power_down
+from device_manager import power_up, power_down, read_server_data_string
 
 class ServerData:
     preamp_temp = '-'
@@ -22,6 +22,10 @@ def run_server():
         logging.info('Client connected')
         power_up()
         while True:
+
+            server_status_msg = read_server_data_string()
+            # TODO: send one line
+
             server_data = read_server_data()
             data_dict = server_data.__dict__
             json_dict = json.dumps(data_dict)

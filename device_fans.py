@@ -87,7 +87,7 @@ class FanReader:
          if RPM < self.min_RPM:
             RPM = 0.0
 
-      return RPM
+      return int(RPM)
 
    def cancel(self):
       """
@@ -122,6 +122,18 @@ def read_fan_status():
     if _pa_intake_reader.RPM() > 1500:             c = '3'
     if _pa_extract_reader.RPM() > 1500:            d = '4'
     return a + b + c + d
+
+def read_enclosure_intake():
+   return f'{_enclosure_intake_reader.RPM()}'
+
+def read_enclosure_extract():
+   return f'{_enclosure_extract_reader.RPM()}'
+
+def read_pa_intake():
+   return f'{_pa_intake_reader.RPM()}'
+
+def read_pa_extract():
+   return f'{_pa_extract_reader.RPM()}'
 
 if __name__ == '__main__':
     pi_outside = pigpio.pi()

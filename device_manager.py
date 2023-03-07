@@ -7,6 +7,8 @@ from device_temperatures import configure_temperature_sensors, shutdown_temperat
 from device_temperatures import read_pa_temperature, read_preamp_temperature
 from device_fans import configure_fan_sensors, shutdown_fan_sensors, read_fan_status
 from device_currents import configure_current_sensors, shutdown_current_sensors, read_pa_current
+from device_fans import read_enclosure_intake, read_enclosure_extract
+from device_fans import read_pa_intake, read_pa_extract
 from device_relays import configure_relays, shutdown_relays
 from device_relays import switch_28v_On, switch_28v_Off
 from device_relays import switch_12v_On, switch_12v_Off
@@ -58,6 +60,16 @@ def read_server_data():
     server_data.pa_current:str = read_pa_current()
     server_data.fans = read_fan_status()
     sleep(1)
-    return server_data    
+    return server_data
 
-
+def read_server_data_string():
+    msg = 'Pre {}, PA {} {}, Ein {} Eout {} PAin {} PAout {}'.format(
+        read_preamp_temperature(),
+        read_pa_temperature(),
+        read_pa_current(),
+        read_enclosure_intake(), 
+        read_enclosure_extract(), 
+        read_pa_intake(), 
+        read_pa_extract())
+    sleep(1)
+    return msg
