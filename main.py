@@ -3,6 +3,7 @@
 import asyncio
 import json
 
+import socketserver
 import logging
 
 from device_constants import SERVER_PORT
@@ -15,7 +16,7 @@ class ServerData:
     pa_current = '-'
     fans = '-'
 
-def run_server():
+def run_server_original():
     # developed from "TCP echo server using streams"
     # https://docs.python.org/3/library/asyncio-stream.html#tcp-echo-server-using-streams
     async def handle(reader, writer):
@@ -52,6 +53,48 @@ def run_server():
 
     asyncio.run(main())
 
+# developed from
+# https://docs.python.org/3/library/socketserver.html?highlight=server#socketserver.TCPServer
+
+class MyTCPHandler(socketserver.BaseRequestHandler):
+    """
+    The request handler class for our server.
+
+    It is instantiated once per connection to the server, and must
+    override the handle() method to implement communication to the
+    client.
+    """
+
+    def handle(self):
+        #print(f'CONNECTED to {self.client_address[0]}', flush=True)
+        logging.info(f'Client {self.client_address[0]} Connected')
+        power_up()
+        #   # self.request is the TCP socket connected to the client
+        #   self.data = self.request.recv(1024).strip()
+        #   print("{} wrote:".format(self.client_address[0]))
+        #   print(self.data)
+        #   # just send back the same data, but upper-cased
+        #   self.request.sendall(self.data.upper())
+        while True:
+            try:
+                self.server_status_msg = read_server_data_string()
+                self.request.sendall(bytes(self.server_status_msg, "utf-8"))
+                #print(self.server_status_msg, flush=True)
+            except:
+                #print('DISCONNECTED', flush=True)
+                logging.info('Connection lost')
+                logging.info(f'Client {self.client_address[0]} Disconnected')
+                power_down()
+                break
+
+def run_server():
+    # Create the server, binding to localhost on port 9999
+    with socketserver.TCPServer(('0.0.0.0', SERVER_PORT), MyTCPHandler) as server:
+        # Activate the server; this will keep running until you
+        # interrupt the program with Ctrl-C
+        server.serve_forever()
+
+
 logging.basicConfig(filename='/home/pi/txserver.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.DEBUG)
 logging.info('---------- TxServer Starting ----------')
 
@@ -60,6 +103,8 @@ logging.info('---------- TxServer Starting ----------')
 if __name__ == '__main__':
 
     congifure_devices()
+
+    #run_server_original()  # TODO: https://github.com/wbenny/python-graceful-shutdown
 
     run_server()  # TODO: https://github.com/wbenny/python-graceful-shutdown
 
