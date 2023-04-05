@@ -114,9 +114,3 @@ if __name__ == '__main__':
     logging.info('About to shutdown')
     #import subprocess
     #subprocess.check_call(['sudo', 'poweroff'])
-
-
-
-
-
-
