@@ -74,7 +74,7 @@ echo "-------------------------------"
 echo
 
 echo "Cloning IS NOT WORKING YET"
-# git clone https://github.com/ea7kir/RxServer.git
+# git clone https://github.com/ea7kir/TxServer.git
 
 echo
 echo "-------------------------------"
